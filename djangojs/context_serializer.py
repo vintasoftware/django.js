@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import json
 import logging
 
+from django.conf import settings
 from django.template.context import RequestContext
 from django.utils import translation, six
 
@@ -54,6 +55,13 @@ class ContextSerializer(object):
                         data[key] = value
         if settings.JS_USER_ENABLED:
             self.handle_user(data)
+        # Monkey patch for https://github.com/noirbizarre/django.js/issues/53
+        data.update({
+            'STATIC_URL': settings.STATIC_URL,
+            'MEDIA_URL': settings.MEDIA_URL,
+            'LANGUAGES': settings.LANGUAGES,
+            'LANGUAGE_CODE': settings.LANGUAGE_CODE,
+        })
         return data
 
     def as_json(self):
