@@ -130,7 +130,6 @@ class TapModuleTest(unittest.TestCase):
 class TapParserTest(unittest.TestCase):
     def test_single_test(self):
         '''Should parse a test and its children'''
-        # import ipdb; ipdb.set_trace()
         parser = TapParser(TapAssertion)
         output = '''
 # test: should be defined

@@ -17,6 +17,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.utils.encoding import python_2_unicode_compatible
 
 from djangojs.tap import TapParser
@@ -175,7 +176,7 @@ class PhantomJsRunner(object):
         pass
 
 
-class JsTestCase(PhantomJsRunner, LiveServerTestCase):
+class JsTestCase(PhantomJsRunner, StaticLiveServerTestCase):
     '''
     A PhantomJS suite that run against the Django LiveServerTestCase
     '''
