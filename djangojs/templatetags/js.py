@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 from django import template
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.utils import six
+from django.utils.safestring import mark_safe
 
 from djangojs import JQUERY_MIGRATE_VERSION
 from djangojs.conf import settings
@@ -112,9 +113,9 @@ def javascript(filename, type='text/javascript'):
     '''A simple shortcut to render a ``script`` tag to a static javascript file'''
     if '?' in filename and len(filename.split('?')) is 2:
         filename, params = filename.split('?')
-        return '<script type="%s" src="%s?%s"></script>' % (type, staticfiles_storage.url(filename), params)
+        return mark_safe('<script type="%s" src="%s?%s"></script>' % (type, staticfiles_storage.url(filename), params))
     else:
-        return '<script type="%s" src="%s"></script>' % (type, staticfiles_storage.url(filename))
+        return mark_safe('<script type="%s" src="%s"></script>' % (type, staticfiles_storage.url(filename)))
 
 
 @register.simple_tag
@@ -138,7 +139,7 @@ def coffee(filename):
 @register.simple_tag
 def css(filename):
     '''A simple shortcut to render a ``link`` tag to a static CSS file'''
-    return '<link rel="stylesheet" type="text/css" href="%s" />' % staticfiles_storage.url(filename)
+    return mark_safe('<link rel="stylesheet" type="text/css" href="%s" />' % staticfiles_storage.url(filename))
 
 
 def _boolean(value):
