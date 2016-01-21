@@ -43,7 +43,7 @@ def urls_as_dict():
     urls = {}
     if settings.JS_URLS_ENABLED:
         if isinstance(module, (six.text_type, six.string_types)):
-            _get_urls(module)
+            urls = _get_urls(module)
         else:
             for item in module:
                 urls = dict(urls.items() + _get_urls(item).items())
