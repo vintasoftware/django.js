@@ -3,7 +3,11 @@ import sys
 
 from os.path import join, isdir
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+try:
+    from django.conf.urls import patterns
+except ImportError:  # Django >= 1.10
+    patterns = None
 
 from djangojs.conf import settings
 from djangojs.views import UrlsJsonView, ContextJsonView, JsInitView, cached_javascript_catalog
@@ -29,9 +33,13 @@ def js_info_dict():
     return js_info_dict
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^init\.js$', JsInitView.as_view(), name='django_js_init'),
     url(r'^urls$', UrlsJsonView.as_view(), name='django_js_urls'),
     url(r'^context$', ContextJsonView.as_view(), name='django_js_context'),
     url(r'^translation$', cached_javascript_catalog, js_info_dict(), name='js_catalog'),
-)
+]
+
+if patterns:  # Django < 1.10
+    urlpatterns = [''] + urlpatterns
+    urlpatterns = patterns(*urlpatterns)
